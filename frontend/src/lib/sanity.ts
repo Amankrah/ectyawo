@@ -76,7 +76,12 @@ export async function getPost(slug: string): Promise<Post | null> {
       return null;
     }
     
-    const post = await client.fetch(`
+    // Normalize the slug to handle encoding/case issues
+    const normalizedSlug = decodeURIComponent(slug.toLowerCase().trim());
+    console.log('Normalized slug for query:', normalizedSlug);
+    
+    // First try exact match
+    let post = await client.fetch(`
       *[_type == "post" && slug.current == $slug][0] {
         _id,
         title,
@@ -94,13 +99,37 @@ export async function getPost(slug: string): Promise<Post | null> {
         "imageUrl": mainImage.asset->url,
         publishedAt
       }
-    `, { slug });
+    `, { slug: normalizedSlug });
     
-    console.log('Sanity query completed for slug:', slug);
+    // If no exact match, try case-insensitive match
+    if (!post) {
+      console.log('No exact match found, trying case-insensitive match');
+      post = await client.fetch(`
+        *[_type == "post" && lower(slug.current) == lower($slug)][0] {
+          _id,
+          title,
+          "slug": slug.current,
+          "category": categories[0]->title,
+          "author": author->name,
+          body[] {
+            ...,
+            _type == "image" => {
+              ...,
+              "url": asset->url,
+              "alt": alt
+            }
+          },
+          "imageUrl": mainImage.asset->url,
+          publishedAt
+        }
+      `, { slug: normalizedSlug });
+    }
+    
+    console.log('Sanity query completed for slug:', normalizedSlug);
     console.log('Post found:', !!post);
     
     if (!post) {
-      console.log('No post found with slug:', slug);
+      console.log('No post found with slug:', normalizedSlug);
     }
     
     return post;

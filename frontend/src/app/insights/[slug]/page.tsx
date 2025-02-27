@@ -67,67 +67,76 @@ export async function generateStaticParams() {
 // Set revalidation time for this page - 60 seconds = 1 minute
 export const revalidate = 60;
 
-// For ISR, use 'auto' instead of boolean value
-export const dynamic = 'auto';
+// Use SSG with ISR
+export const dynamic = 'force-static';
+export const generateStaticParamsLimit = 100;
 
 export default async function PostPage({
   params,
 }: {
-  params: Promise<{ slug: string }> | { slug: string };
+  params: { slug: string };
 }) {
-  // Handle both Promise and non-Promise params
-  const { slug } = await Promise.resolve(params);
+  try {
+    const { slug } = params;
+    
+    // Add more detailed logging
+    console.log('Fetching post with slug:', slug);
+    
+    // Normalize the slug - handle potential case differences or encoding issues
+    const normalizedSlug = decodeURIComponent(slug.toLowerCase());
+    
+    const post = await getPost(normalizedSlug);
+    
+    console.log('Post found?', !!post);
   
-  // Add more detailed logging
-  console.log('Fetching post with slug:', slug);
+    if (!post) {
+      console.log('Post not found, returning 404');
+      return notFound();
+    }
   
-  const post = await getPost(slug);
+    return (
+      <article className="container max-w-3xl py-24">
+        <header className="mb-12">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+            {post.category && <span>{post.category}</span>}
+            {post.author && (
+              <>
+                <span>•</span>
+                <span>By {post.author}</span>
+              </>
+            )}
+            <span>•</span>
+            <time dateTime={post.publishedAt}>
+              {new Date(post.publishedAt).toLocaleDateString()}
+            </time>
+          </div>
+          <h1 className="text-4xl font-bold tracking-tight mb-6">{post.title}</h1>
+        </header>
   
-  console.log('Post found?', !!post);
-
-  if (!post) {
-    console.log('Post not found, returning 404');
-    notFound();
-  }
-
-  return (
-    <article className="container max-w-3xl py-24">
-      <header className="mb-12">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-          {post.category && <span>{post.category}</span>}
-          {post.author && (
-            <>
-              <span>•</span>
-              <span>By {post.author}</span>
-            </>
-          )}
-          <span>•</span>
-          <time dateTime={post.publishedAt}>
-            {new Date(post.publishedAt).toLocaleDateString()}
-          </time>
-        </div>
-        <h1 className="text-4xl font-bold tracking-tight mb-6">{post.title}</h1>
-      </header>
-
-      {post.imageUrl && (
-        <div className="mb-12 relative aspect-video">
-          <Image
-            src={post.imageUrl}
-            alt={post.title}
-            fill
-            className="rounded-lg object-cover"
-          />
-        </div>
-      )}
-
-      <div className="prose prose-lg max-w-none">
-        {post.body && (
-          <PortableText 
-            value={post.body}
-            components={components}
-          />
+        {post.imageUrl && (
+          <div className="mb-12 relative aspect-video">
+            <Image
+              src={post.imageUrl}
+              alt={post.title}
+              fill
+              className="rounded-lg object-cover"
+              priority
+            />
+          </div>
         )}
-      </div>
-    </article>
-  );
+  
+        <div className="prose prose-lg max-w-none">
+          {post.body && (
+            <PortableText 
+              value={post.body}
+              components={components}
+            />
+          )}
+        </div>
+      </article>
+    );
+  } catch (error) {
+    console.error('Error rendering post page:', error);
+    return notFound();
+  }
 }
