@@ -137,4 +137,53 @@ export async function getPost(slug: string): Promise<Post | null> {
     console.error('Error fetching post with slug:', slug, error);
     return null;
   }
+}
+
+/**
+ * Fetches adjacent posts (next and previous) based on the current post's publication date
+ * @param currentSlug - The slug of the current post
+ * @param currentDate - The publication date of the current post
+ * @returns Object containing next and previous posts, if they exist
+ */
+export async function getAdjacentPosts(currentSlug: string, currentDate: string): Promise<{
+  nextPost: Post | null;
+  previousPost: Post | null;
+}> {
+  try {
+    // Normalize the current slug
+    const normalizedSlug = decodeURIComponent(currentSlug.toLowerCase().trim());
+    
+    // Get the next post (newer than current post)
+    const nextPost = await client.fetch(`
+      *[_type == "post" && publishedAt > $currentDate]
+      | order(publishedAt asc)[0] {
+        _id,
+        title,
+        "slug": slug.current,
+        "category": categories[0]->title,
+        "excerpt": pt::text(body),
+        "imageUrl": mainImage.asset->url,
+        publishedAt
+      }
+    `, { currentDate });
+    
+    // Get the previous post (older than current post)
+    const previousPost = await client.fetch(`
+      *[_type == "post" && publishedAt < $currentDate]
+      | order(publishedAt desc)[0] {
+        _id,
+        title,
+        "slug": slug.current,
+        "category": categories[0]->title,
+        "excerpt": pt::text(body),
+        "imageUrl": mainImage.asset->url,
+        publishedAt
+      }
+    `, { currentDate });
+    
+    return { nextPost, previousPost };
+  } catch (error) {
+    console.error('Error fetching adjacent posts:', error);
+    return { nextPost: null, previousPost: null };
+  }
 } 
