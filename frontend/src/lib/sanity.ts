@@ -3,15 +3,21 @@ import { Post } from './types';
 
 // Determine if we're in a production environment
 const isProduction = process.env.NODE_ENV === 'production';
+console.log('Environment:', process.env.NODE_ENV);
+console.log('Using production config:', isProduction);
 
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-02-20',
-  useCdn: false, // Disable CDN to avoid caching issues
-  // Use stronger cache busting in production
-  token: isProduction ? process.env.SANITY_API_TOKEN : undefined,
-  perspective: isProduction ? 'published' : undefined,
+  useCdn: isProduction, // Enable CDN in production for better performance
+  token: process.env.SANITY_API_TOKEN, // Always include token if available
+  perspective: 'published', // Always use published perspective
+  // Development-specific options
+  stega: !isProduction ? {
+    enabled: true,
+    studioUrl: '/studio',
+  } : undefined,
 });
 
 export async function getLatestPosts(limit = 5): Promise<Post[]> {
@@ -62,6 +68,8 @@ export async function getPostsByCategory(category: string): Promise<Post[]> {
 export async function getPost(slug: string): Promise<Post | null> {
   try {
     console.log('Attempting to fetch post with slug:', slug);
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('API Token available:', !!process.env.SANITY_API_TOKEN);
     
     if (!slug) {
       console.error('Invalid slug provided:', slug);

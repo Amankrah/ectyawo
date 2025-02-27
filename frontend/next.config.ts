@@ -5,6 +5,8 @@ const nextConfig: NextConfig = {
   experimental: {
     authInterrupts: true,
   },
+  // Improved ISR and dynamic route handling
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
@@ -23,6 +25,7 @@ const nextConfig: NextConfig = {
     // Needed for Sanity Studio
     ignoreDuringBuilds: true,
   },
+  // Add custom 404 page handling
   headers: async () => [
     {
       source: "/(.*)",

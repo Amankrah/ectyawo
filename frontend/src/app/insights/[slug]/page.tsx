@@ -49,18 +49,26 @@ const components: Partial<PortableTextReactComponents> = {
 
 // Generate static params for known posts
 export async function generateStaticParams() {
-  const posts = await getLatestPosts(50); // Fetch a reasonable number of posts
-  
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    console.log('Generating static paths for insights posts');
+    const posts = await getLatestPosts(100); // Fetch more posts to ensure coverage
+    
+    console.log(`Generated paths for ${posts.length} posts`);
+    
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error('Error generating static paths:', error);
+    return [];
+  }
 }
 
 // Set revalidation time for this page - 60 seconds = 1 minute
 export const revalidate = 60;
 
-// Set dynamic rendering for this route
-export const dynamic = 'force-dynamic';
+// Use ISR instead of forcing dynamic
+export const dynamic = false;
 
 export default async function PostPage({
   params,
