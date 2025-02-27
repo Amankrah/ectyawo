@@ -67,8 +67,8 @@ export async function generateStaticParams() {
 // Set revalidation time for this page - 60 seconds = 1 minute
 export const revalidate = 60;
 
-// Use ISR instead of forcing dynamic
-export const dynamic = false;
+// For ISR, use 'auto' instead of boolean value
+export const dynamic = 'auto';
 
 export default async function PostPage({
   params,
