@@ -4,6 +4,9 @@ import { getLatestPosts } from "@/lib/sanity";
 import Link from "next/link";
 import Image from "next/image";
 
+// Set revalidation time for this page - 60 seconds = 1 minute
+export const revalidate = 60;
+
 export default async function InsightsPage() {
   const posts = await getLatestPosts(6);
 

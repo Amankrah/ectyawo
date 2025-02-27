@@ -1,4 +1,4 @@
-import { getPost } from "@/lib/sanity";
+import { getLatestPosts, getPost } from "@/lib/sanity";
 import { notFound } from "next/navigation";
 import { PortableText, PortableTextReactComponents } from "@portabletext/react";
 import Image from "next/image";
@@ -47,15 +47,38 @@ const components: Partial<PortableTextReactComponents> = {
   },
 };
 
+// Generate static params for known posts
+export async function generateStaticParams() {
+  const posts = await getLatestPosts(50); // Fetch a reasonable number of posts
+  
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+// Set revalidation time for this page - 60 seconds = 1 minute
+export const revalidate = 60;
+
+// Set dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 export default async function PostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }> | { slug: string };
 }) {
-  const { slug } = await params;
+  // Handle both Promise and non-Promise params
+  const { slug } = await Promise.resolve(params);
+  
+  // Add more detailed logging
+  console.log('Fetching post with slug:', slug);
+  
   const post = await getPost(slug);
+  
+  console.log('Post found?', !!post);
 
   if (!post) {
+    console.log('Post not found, returning 404');
     notFound();
   }
 

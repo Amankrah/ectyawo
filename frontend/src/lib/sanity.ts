@@ -1,11 +1,17 @@
 import { createClient } from '@sanity/client';
 import { Post } from './types';
 
+// Determine if we're in a production environment
+const isProduction = process.env.NODE_ENV === 'production';
+
 export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-02-20',
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: false, // Disable CDN to avoid caching issues
+  // Use stronger cache busting in production
+  token: isProduction ? process.env.SANITY_API_TOKEN : undefined,
+  perspective: isProduction ? 'published' : undefined,
 });
 
 export async function getLatestPosts(limit = 5): Promise<Post[]> {
@@ -54,26 +60,44 @@ export async function getPostsByCategory(category: string): Promise<Post[]> {
 }
 
 export async function getPost(slug: string): Promise<Post | null> {
-  const post = await client.fetch(`
-    *[_type == "post" && slug.current == $slug][0] {
-      _id,
-      title,
-      "slug": slug.current,
-      "category": categories[0]->title,
-      "author": author->name,
-      body[] {
-        ...,
-        _type == "image" => {
-          ...,
-          "url": asset->url,
-          "alt": alt
-        }
-      },
-      "imageUrl": mainImage.asset->url,
-      publishedAt
+  try {
+    console.log('Attempting to fetch post with slug:', slug);
+    
+    if (!slug) {
+      console.error('Invalid slug provided:', slug);
+      return null;
     }
-  `, { slug });
-  
-  console.log('Sanity response:', JSON.stringify(post, null, 2));
-  return post;
+    
+    const post = await client.fetch(`
+      *[_type == "post" && slug.current == $slug][0] {
+        _id,
+        title,
+        "slug": slug.current,
+        "category": categories[0]->title,
+        "author": author->name,
+        body[] {
+          ...,
+          _type == "image" => {
+            ...,
+            "url": asset->url,
+            "alt": alt
+          }
+        },
+        "imageUrl": mainImage.asset->url,
+        publishedAt
+      }
+    `, { slug });
+    
+    console.log('Sanity query completed for slug:', slug);
+    console.log('Post found:', !!post);
+    
+    if (!post) {
+      console.log('No post found with slug:', slug);
+    }
+    
+    return post;
+  } catch (error) {
+    console.error('Error fetching post with slug:', slug, error);
+    return null;
+  }
 } 
