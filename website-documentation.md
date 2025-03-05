@@ -14,7 +14,7 @@ This documentation outlines the structure, design principles, and content strate
   - Body: [Font Selection Pending]
   - Logo: Custom handwritten style
 - **Design Principles**:
-  - Minimalist aesthetic
+  - Minimalist aesthetic (coll)
   - Ample white space
   - Clear visual hierarchy
   - Strategic use of sage green for emphasis
