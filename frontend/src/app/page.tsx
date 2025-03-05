@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 import { LogoCarousel } from "@/components/ui/carousel";
-import { Timeline } from "@/components/ui/timeline"
 import { TestimonialCard } from "@/components/ui/testimonial-card"
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useEffect, useState } from "react";
 
 const DesktopHero = () => (
   <section className="relative w-full min-h-[100svh] overflow-hidden">
@@ -86,28 +86,41 @@ const MobileHero = () => (
   </section>
 );
 
+// Add this type definition
+type Post = {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  imageUrl?: string;
+  category?: string;
+  author?: string;
+  publishedAt: string;
+};
+
 export default function Home() {
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const [latestPost, setLatestPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const timeline = [
-    { year: "2024-present", events: [
-      "Doctoral research studying household food environments",
-      "Traveled the length and breadth of Ghana to study consumer food practices at home and micro scale"
-    ]},
-    { year: "2023-present", events: "Running FoodPulse, a food education platform providing resources to consumers on food choices" },
-    { year: "2023", events: 'Pivoted L&J Foods Ltd to FoodPulse after dealing with depression from "failure" of L&J Foods' },
-    { year: "2022-present", events: "Speaking on food systems topics at various events" },
-    { year: "2021-2023", events: [
-      "Pursued a masters in food science and technology with a focus on food safety",
-      "Started L&J Foods company Ltd",
-      "Led a team to train rural farmers on sustainable farming practices"
-    ]},
-    { year: "2019", events: "Started another food business with a partner on campus (also failed)" },
-    { year: "2018", events: "Started a small food business from my university dorm (later failed)" },
-    { year: "2017", events: "Developed a process to extend the shelf life of a highly perishable leafy vegetable from 3 days to 21 days" },
-    { year: "2015", events: "Got inspired through an argument with mum and started exploring the food space" }
-  ];
+  useEffect(() => {
+    async function fetchLatestPost() {
+      try {
+        const response = await fetch('/api/latest-post');
+        if (!response.ok) throw new Error('Failed to fetch latest post');
+        const data = await response.json();
+        setLatestPost(data);
+      } catch (error) {
+        console.error('Error fetching latest post:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
+    fetchLatestPost();
+  }, []);
+
+  
   const organizationLogos = [
     { src: "/logos/centreforgreengrowth.png", alt: "Centre for Green Growth", sizes: "(max-width: 768px) 33vw, 20vw", priority: true },
     { src: "/logos/graffiland.png", alt: "GraffiLand", sizes: "(max-width: 768px) 33vw, 20vw", priority: true },
@@ -149,8 +162,8 @@ export default function Home() {
     {
       type: "image",
       src: "/gallery/teaching.jpg",
-      alt: "Teaching concepts in food science",
-      title: "Teaching concepts in food science",
+      alt: "Taught concepts in food science",
+      title: "Taught concepts in food science",
       sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
     },
     {
@@ -323,26 +336,18 @@ export default function Home() {
           <div className="text-center md:text-left">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">About Me</h2>
             <p className="text-base md:text-lg text-muted-foreground mb-6">
-              A food systems expert with a passion for bridging research and practical implementation.
-              Focused on nutrient preservation in home cooking and improving food practices globally.
+              Hi, I&apos;m Etornam. I&apos;m a Food Systems Research Engineer with a generous passion for healthy food. 
+              I got started in food in the weirdest of ways about a decade ago. And spent part of that decade with rural farmers, in food processing and in consumers home kitchens.You can read my full story here <Link href="http://buymeacoffee.com/etornamctsyawo/how-my-food-journey-began" 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >here</Link>.
             </p>
             <Link 
-              href="http://buymeacoffee.com/etornamctsyawo/how-my-food-journey-began"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/about"
             >
               <Button className="w-full md:w-auto hover:scale-105 transition-transform group">
-                <span>My Story</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                </svg>
+                <span>Read my story here</span>
+                
               </Button>
             </Link>
           </div>
@@ -352,27 +357,105 @@ export default function Home() {
       {/* Research & Insights with Gradient */}
       <section className="container py-8 md:py-16 bg-gradient-to-b from-muted/50 to-background">
         <div className="max-w-[800px] mx-auto text-center animate-fade-in-up px-4 md:px-0">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Research & Insights</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Research Highlight</h2>
           <p className="text-base md:text-lg text-muted-foreground mb-4 md:mb-6">
-            PhD Research focusing on nutrient preservation in home cooking, 
-            providing valuable insights for smart kitchen manufacturers, 
-            consumers, NGOs, and policymakers.
+          My research explores consumer food systems, including nutrient optimization in 
+          home food processing with associated technologies and digital decision support systems. 
+          The insights benefit health-conscious consumers, kitchen equipment technology and personalized 
+          nutrition organizations, food-focused NGOs and researchers in the field of environmental nutrition. 
+            
           </p>
           <Link href="/research">
             <Button className="w-full md:w-auto hover:scale-105 transition-transform">
-              Collaborate on Research
+              Explore my research
             </Button>
           </Link>
         </div>
       </section>
 
-      {/* Professional Timeline with Animation */}
-      <section className="container py-8 md:py-16">
-        <h2 className="text-2xl md:text-3xl font-bold mb-8 md:mb-12 text-center animate-fade-in px-4 md:px-0">Professional Journey</h2>
-        <div className="max-w-3xl mx-auto px-4 md:px-0">
-          <Timeline items={timeline} />
+      {/* Insights Section with Gradient and Latest Post */}
+      <section className="container py-8 md:py-16 bg-gradient-to-r from-background via-muted/30 to-background">
+        <div className="max-w-[1000px] mx-auto text-center animate-fade-in-up px-4 md:px-0">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Food Insights</h2>
+          <p className="text-base md:text-lg text-muted-foreground mb-8 md:mb-10">
+            Discover practical and stories about topics beyond just food and food systems. 
+          </p>
+          
+          {/* Latest Post Card */}
+          {!loading && latestPost && (
+            <div className="mb-8 md:mb-10 overflow-hidden bg-card rounded-xl shadow-md transition-all hover:shadow-lg">
+              <div className="md:flex">
+                {latestPost.imageUrl && (
+                  <div className="relative w-full md:w-2/5 aspect-video md:aspect-square">
+                    <Image
+                      src={latestPost.imageUrl}
+                      alt={latestPost.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="p-6 md:p-8 w-full md:w-3/5 text-left flex flex-col">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                    {latestPost.category && <span>{latestPost.category}</span>}
+                    {latestPost.author && (
+                      <>
+                        <span>•</span>
+                        <span>By {latestPost.author}</span>
+                      </>
+                    )}
+                    <span>•</span>
+                    <time dateTime={latestPost.publishedAt}>
+                      {new Date(latestPost.publishedAt).toLocaleDateString()}
+                    </time>
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{latestPost.title}</h3>
+                  {latestPost.excerpt && (
+                    <p className="text-muted-foreground mb-4 line-clamp-3">
+                      {latestPost.excerpt}
+                    </p>
+                  )}
+                  <div className="mt-auto">
+                    <Link href={`/insights/${latestPost.slug}`}>
+                      <Button variant="outline" className="hover:bg-primary hover:text-primary-foreground transition-colors group">
+                        <span>Read full article</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none" 
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          stroke="currentColor"
+                          className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <Link href="/insights">
+            <Button className="w-full md:w-auto hover:scale-105 transition-transform group">
+              <span>Browse all insights</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </Button>
+          </Link>
         </div>
       </section>
+
+      
 
       {/* FoodPulse Platform with Card Effect */}
       <section className="container py-8 md:py-16">
@@ -380,11 +463,12 @@ export default function Home() {
           <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">FoodPulse</h2>
           <p className="text-base md:text-lg text-muted-foreground mb-4 md:mb-6">
             Your hub for consumer-focused food education, bringing together 
-            insights, research, and practical knowledge.
+            insights, research, and practical knowledge. If you want reliable, practical
+            and highly engaging information on your food choices as a consumer, FoodPulse is for you.
           </p>
           <Link href="https://foodpulse.co/" target="_blank" rel="noopener noreferrer">
             <Button className="w-full md:w-auto hover:scale-105 transition-transform">
-              Explore FoodPulse
+              Explore FoodPulse here
             </Button>
           </Link>
         </div>

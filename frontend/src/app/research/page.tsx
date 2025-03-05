@@ -12,33 +12,33 @@ import { sendContactEmail } from "../actions";
 
 const researchAreas = [
   {
-    title: "Food Systems Transformation",
-    description: "Investigating systemic approaches to creating sustainable and equitable food systems.",
+    title: "Consumer Food Systems",
+    description: "Investigating how consumers navigate food environments and the complex interactions among key parameters that influence their food practices everyday",
     keyTopics: [
-      "Sustainable Agriculture",
-      "Food Security",
-      "Supply Chain Innovation",
-      "Policy Implementation"
+      "Consumer food choices",
+      "Behavioral food science",
+      "Consumer home food practices",
+      "Industry-consumer communication"
     ]
   },
   {
-    title: "Agricultural Innovation",
-    description: "Exploring technological and methodological advances in agricultural practices.",
+    title: "Nutrient Retention Optimization",
+    description: "Developing and evaluating technologies that optimize nutrient retention during home food preparation",
     keyTopics: [
-      "Smart Farming",
-      "Sustainable Practices",
-      "Resource Optimization",
-      "Climate Resilience"
+      "Smart kitchen technologies",
+      "Optimized home cooking methods",
+      "Process-based nutrient retention",
+      "Accessible home food processing techniques"
     ]
   },
   {
-    title: "Policy Impact Analysis",
-    description: "Evaluating the effectiveness of food policy interventions and their outcomes.",
+    title: "Food Decision Support Systems",
+    description: "Developing and testing digital tools that can empower consumers to make well-informed, healthier and environmentally conscious food decisions",
     keyTopics: [
-      "Policy Evaluation",
-      "Stakeholder Analysis",
-      "Implementation Strategies",
-      "Impact Assessment"
+      "Effective consumer food education",
+      "Technology-mediated food practices",
+      "Personalized nutrition technologies",
+      "User experience in digital food applications"
     ]
   }
 ];
@@ -47,56 +47,53 @@ const timeline = [
   {
     year: "2024",
     title: "Doctoral Research",
-    description: "Leading research on sustainable food systems transformation",
-    institution: "University of Agriculture",
+    description: "Researching nutrient retention technologies and decision support systems",
+    institution: "McGill University",
     ongoing: true
+  },
+  {
+    year: "2024",
+    title: "Context-Appropriate Food Governance",
+    description: "Policy-focused manuscript",
+    publication: "Under expert review"
+  },
+  {
+    year: "2024",
+    title: "Ethnographic Research",
+    description: "Studied food practices in consumer homes and small roadside kitchens",
+    institution: "Conducted in Ghana"
   },
   {
     year: "2023",
     title: "Published Research",
-    description: "Impact of Policy Interventions on Food Security",
-    publication: "Journal of Food Systems"
+    description: "Rapid and non-destructive detection of adulterants in food",
+    publication: "Journal of Meat Science"
   },
   {
     year: "2022",
-    title: "Research Fellowship",
-    description: "Agricultural Innovation and Sustainability",
-    institution: "Global Food Institute"
-  },
-  {
-    year: "2021",
-    title: "Master's Thesis",
-    description: "Sustainable Agriculture in Developing Economies",
-    institution: "University of Agriculture"
+    title: "Product Development",
+    description: "Developed a functional snack from cassava for iron-deficient cases",
+    institution: "KNUST"
   }
 ];
 
 const collaborationAreas = [
   {
     area: "Academic Research",
-    description: "Joint research projects on food systems and agricultural innovation",
+    description: "Joint research projects on food systems and consumer food environments",
     opportunities: [
+      "Masters supervision",
       "Cross-institutional studies",
-      "PhD supervision",
       "Research paper collaboration"
     ]
   },
   {
-    area: "Industry Projects",
-    description: "Partnerships with organizations implementing sustainable practices",
+    area: "Industry Research",
+    description: "Partnership with companies and institutions focused on consumer food spaces",
     opportunities: [
-      "Field studies",
+      "Food education studies",
       "Implementation research",
-      "Impact assessment"
-    ]
-  },
-  {
-    area: "Policy Research",
-    description: "Collaboration on food policy analysis and recommendations",
-    opportunities: [
-      "Policy evaluation",
-      "Stakeholder engagement",
-      "Evidence-based recommendations"
+      "Nutrient optimization tech research"
     ]
   }
 ];
@@ -132,13 +129,13 @@ export default function ResearchPage() {
           Research & Impact
         </h1>
         <p className="max-w-[42rem] text-center text-lg text-muted-foreground sm:text-xl">
-          Advancing knowledge in food systems transformation through rigorous research and collaboration
+          Cultivating a Healthier Food System by Understanding Consumer Food Systems
         </p>
       </section>
 
       {/* Current Research Areas */}
       <section id="areas" className="container py-12 md:py-24">
-        <h2 className="text-3xl font-bold text-center mb-12">Research Focus</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Research Focus Areas</h2>
         <div className="grid gap-6 md:grid-cols-3">
           {researchAreas.map((area) => (
             <Card key={area.title} className="flex flex-col">
@@ -161,7 +158,7 @@ export default function ResearchPage() {
 
       {/* Research Timeline */}
       <section id="timeline" className="container py-12 md:py-24 bg-sage-50">
-        <h2 className="text-3xl font-bold text-center mb-12">Research Journey</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Research & Projects</h2>
         <div className="max-w-3xl mx-auto">
           {timeline.map((item) => (
             <div key={item.year} className="relative pl-8 pb-12 last:pb-0">
