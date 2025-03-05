@@ -113,7 +113,7 @@ export default {
 }
 ```
 
-## Deployment Pipeline
+## Deploymen Pipeline
 
 ### Vercel Configuration
 ```json
