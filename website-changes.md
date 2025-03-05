@@ -102,7 +102,7 @@ Timeline visualization:
 - Base rate: $1,500
 - Academic lecture subsidies available
 
-### 9. FAQ Section
+### 9. FAQ
 Accordion-style layout:
 1. Cancellation policy
 2. Content adaptation approach
