@@ -1,4 +1,5 @@
 import { getLatestPosts, getPost, getAdjacentPosts } from "@/lib/sanity";
+import { Post } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { PortableText, PortableTextReactComponents } from "@portabletext/react";
 import Image from "next/image";
@@ -75,7 +76,7 @@ export const dynamic = 'force-static';
 export const generateStaticParamsLimit = 100;
 
 // Post Navigation Component
-function PostNavigation({ nextPost, previousPost }: { nextPost: any, previousPost: any }) {
+function PostNavigation({ nextPost, previousPost }: { nextPost: Post | null, previousPost: Post | null }) {
   return (
     <div className="border-t pt-10 mt-16">
       <h2 className="text-2xl font-bold mb-8 text-center">Continue Reading</h2>

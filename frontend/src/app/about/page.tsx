@@ -6,6 +6,12 @@ import Image from "next/image";
 import { Timeline } from "@/components/ui/timeline";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+// Import our new interactive story components
+import { InteractiveStory } from "@/components/ui/interactive-story";
+import { StoryStep, StoryHighlight } from "@/components/ui/story-step";
+import { DialogueBubble, ThoughtBubble, EmotionIndicator, SceneTransition } from "@/components/ui/story-effects";
+import { TypewriterText, RevealText, AnimatedBackground, Spotlight } from "@/components/ui/animated-elements";
+
 export default function AboutPage() {
   const timeline = [
     { year: "2024-present", events: [
@@ -62,11 +68,6 @@ export default function AboutPage() {
                 <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">Food Educator</span>
               </div>
               <div className="flex flex-wrap gap-4 justify-center md:justify-start animate-fade-in-up delay-300">
-                <Link href="/speaking">
-                  <Button className="px-6 hover:scale-105 transition-transform">
-                    Book me as a Speaker
-                  </Button>
-                </Link>
                 <Link href="/contact">
                   <Button variant="outline" className="px-6 hover:scale-105 transition-transform">
                     Contact Me
@@ -112,126 +113,219 @@ export default function AboutPage() {
               </div>
             </div>
             
-            <div className="bg-muted/10 p-6 rounded-lg mb-8 border-l-4 border-primary/50">
-              <p className="italic text-lg">
-                It was a chilly Saturday morning in December. The cold, dry air greeted me as the sun rose 
+            {/* Interactive Story Section */}
+            <InteractiveStory title="The Journey Begins" showControls={true}>
+              {/* Scene 1: Introduction */}
+              <StoryStep type="quote">
+                <TypewriterText 
+                  text="It was a chilly Saturday morning in December. The cold, dry air greeted me as the sun rose 
                 high in the sky. My mum called me to take some money and buy tin tomato paste to prepare a 
-                stew for lunch later in the day.
-              </p>
-            </div>
-            
-            <div className="space-y-5">
-              <p>
-                &quot;Tin tomato again?!&quot; I shouted, barely masking my frustration with a tone of respect. My 
-                frustration was understandable – my dad doesn&apos;t like tin tomato stew, my mom too, and I 
-                wasn&apos;t a fan either. It&apos;s nothing close to fresh tomatoes. But when times were tough and 
-                fresh tomatoes were hard to come by, we had no choice. Healthy food has always been our go-to.
-                We had farms and backyard gardens, but that wasn&apos;t always enough when the seasons 
-                changed from rainy June to dry chilly December.
-              </p>
+                stew for lunch later in the day."
+                  speed={30}
+                  className="italic text-lg"
+                />
+              </StoryStep>
+              
+              {/* Scene 2: Conversation starts */}
+              <StoryStep type="default">
+                <RevealText>
+                  <DialogueBubble speaker="Me" side="right">
+                    &quot;Tin tomato again?!&quot; <EmotionIndicator emotion="frustration" />
+                  </DialogueBubble>
+                </RevealText>
+                
+                <RevealText delay={0.5}>
+                  <p>
+                    I shouted, barely masking my frustration with a tone of respect. My 
+                    frustration was understandable – my dad doesn&apos;t like tin tomato stew, my mom too, and I 
+                    wasn&apos;t a fan either. It&apos;s nothing close to fresh tomatoes. But when times were tough and 
+                    fresh tomatoes were hard to come by, we had no choice. Healthy food has always been our go-to.
+                    We had farms and backyard gardens, but that wasn&apos;t always enough when the seasons 
+                    changed from rainy June to dry chilly December.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 3: The dialogue intensifies */}
+              <StoryStep type="default">
+                <RevealText>
+                  <DialogueBubble speaker="Mom" side="left">
+                    &quot;Did you say tin tomatoes again?&quot;
+                  </DialogueBubble>
+                </RevealText>
 
-              <p>
-                My mum noticed my tone and retorted sharply, 
-                &quot;Did you say tin tomatoes again?&quot; &quot;Yes,&quot; I replied, my voice rising again. &quot;Yesterday we had 
-                tin tomato stew, and the day before that too. I&apos;m really tired of this tin tomatoes thing. What 
-                happened to kontomire or other vegetables?&quot;
-              </p>
-
-              <div className="my-8 border-l-4 border-primary pl-6 py-2">
-                <p className="text-xl font-medium">
+                <RevealText delay={0.4}>
+                  <DialogueBubble speaker="Me" side="right">
+                    &quot;Yes. Yesterday we had tin tomato stew, and the day before that too. I&apos;m really tired of this tin tomatoes thing. What happened to kontomire or other vegetables?&quot;
+                  </DialogueBubble>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 4: Mom's response */}
+              <StoryStep type="highlight">
+                <StoryHighlight>
                   She shot back, her voice even louder, &quot;Have you seen any vegetables these days? Can&apos;t you see that
                   the weather is dry, and those vegetables are so expensive if you can even find them at all?&quot;
-                </p>
-              </div>
-
-              <p>
-                Frustrated, I shouted, &quot;So what were they doing when all these vegetables were in season? 
-                Couldn&apos;t they have stored them somewhere so there would be enough in the off-season?&quot; Pointing 
-                at me, she shouted, &quot;Are you saying &apos;they&apos;? How about you? What are you doing about it?&quot; At
-                that moment, her words struck me like lightning. I fell into a trance, her voice fading into
-                the background. I just kept whispering to myself, &quot;It&apos;s true. What am I doing about it?&quot;
-              </p>
-
-              <p>
-                She called me back into the moment. And asked me to take the money and go buy the tin tomatoes. If
-                you know a typical African household, you&apos;d know it&apos;s not normal to talk to an African parent 
-                in such a manner and go scot-free. It&apos;s simply not possible. At best you get a serious warning or 
-                scolding. At worst, you get a sound beating for being disrespectful.
-              </p>
-
-              <p>
-                To my surprise, nothing like that happened to me. I took the money, went to buy the tin tomatoes, and prepared the stew. But 
-                the question lingered in my mind all day – &quot;It&apos;s true. What am I doing about it?&quot; It wasn&apos;t just 
-                the lack of fresh vegetables - it was the waste of fresh produce I had seen growing up.
-              </p>
-            </div>
-
-            <div className="my-8 bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-6">
-              <p>
-                Kontomire and other vegetables, when in season, often went to waste. Sometimes even being intentionally thrown 
-                away. There were other events leading up to this. I was already wondering why food went to waste.
-                This situation extended to other crops like cassava, corn, yam, among others. Inadequate ways of 
-                preserving them caused so much waste. Other farmers resorted to using chemicals or selling them cheaply.
-              </p>
-              <p className="mt-4">
-                My hometown is a major agricultural zone, and we had (still have) farms. It seemed absurd that 
-                we went through such cycles of abundance and scarcity. It just didn&apos;t make any sense to me!
-              </p>
-            </div>
-
-            <p>
-              At the time, I was also seriously considering what program to study at the university. My dad 
-              suggested medicine, a field I had no interest in. But on that Saturday morning, a new path 
-              became crystal clear to me. Thanks to mum! That final event set the course of my life. It 
-              propelled me to study chemical engineering at the university because I believed that&apos;s how 
-              I could do something about the situation.
-            </p>
-
-            <div className="h-6"></div>
-
-            <p>
-              Every course I took, from Transport Phenomena to Calculus, from Material balance to Plant design, 
-              from Reaction engineering to Instrumentation, and even English and Economics. I always asked myself 
-              after class, &quot;How will today&apos;s lesson help me solve the problem?&quot; I became obsessed! And questioned 
-              if I was losing it.
-            </p>
-
-            <div className="h-6"></div>
-
-            
-            <p>
-            My very first project in my first year was designing a process to preserve kontomire. I worked on this project 
-            for two years before taking a break. But during the COVID lockdown, I resumed work on it, using my 
-            elder sister&apos;s refrigerator as my lab. This project didn&apos;t get anywhere seemingly. But I can now 
-            store kontomire in my refrigerator from a minimum of 2 weeks to a maximum of 6 weeks. Normally, it lasts 5 to 7 days.
-            </p>
-
-            <div className="h-6"></div>
-
-            <p>
-              After this, I conducted scientific projects on food. I engaged in self-study about food and nutrition. 
-              I ran food businesses. I worked with 30 rural farmers. I spoke at esteemed events about food systems. 
-              I worked in food companies. I uphold healthy food practices for a more balanced &quot;adult&quot; life. And I 
-              share my knowledge and experiences on LinkedIn.
-            </p>
-
-            <div className="h-6"></div>
-
-            <div className="my-8 border-l-4 border-primary pl-6 py-2">
-              <p className="text-xl">
-                From that day to now, it&apos;s been 9 years, and the question, &quot;What are you doing about it?&quot; 
-                still rings in my mind. I have never looked back.
-              </p>
-            </div>
-
-            <p>
-              Have you found your passion? Pursue it with resilience, take it day by day. Have you not found 
-              your passion? Search for it. It&apos;ll come knowingly or unknowingly, in the grandest of situations or in 
-              seemingly insignificant moments. Whatever there may be, you&apos;ll find it.
-            </p>
+                </StoryHighlight>
+              </StoryStep>
+              
+              {/* Scene 5: Frustration peaks */}
+              <StoryStep type="default">
+                <RevealText>
+                  <p>
+                    Frustrated, I shouted, &quot;So what were they doing when all these vegetables were in season? 
+                    Couldn&apos;t they have stored them somewhere so there would be enough in the off-season?&quot;
+                  </p>
+                </RevealText>
+                
+                <RevealText delay={0.6}>
+                  <DialogueBubble speaker="Mom" side="left">
+                    <Spotlight>
+                      &quot;Are you saying &apos;they&apos;? How about you? What are you doing about it?&quot;
+                    </Spotlight>
+                  </DialogueBubble>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 6: The epiphany */}
+              <StoryStep type="default">
+                <RevealText>
+                  <p>
+                    At that moment, her words struck me like lightning. I fell into a trance, her voice fading into
+                    the background.
+                  </p>
+                </RevealText>
+                
+                <RevealText delay={0.5}>
+                  <ThoughtBubble>
+                    <TypewriterText
+                      text="It's true. What am I doing about it?"
+                      speed={50}
+                      className="text-center"
+                    />
+                  </ThoughtBubble>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 7: Returning to reality */}
+              <StoryStep type="default">
+                <RevealText>
+                  <p>
+                    She called me back into the moment. And asked me to take the money and go buy the tin tomatoes. If
+                    you know a typical African household, you&apos;d know it&apos;s not normal to talk to an African parent 
+                    in such a manner and go scot-free. It&apos;s simply not possible. At best you get a serious warning or 
+                    scolding. At worst, you get a sound beating for being disrespectful.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 8: Surprise */}
+              <StoryStep type="default">
+                <RevealText>
+                  <p>
+                    To my surprise, nothing like that happened to me. I took the money, went to buy the tin tomatoes, and prepared the stew. But 
+                    the question lingered in my mind all day – &quot;It&apos;s true. What am I doing about it?&quot; It wasn&apos;t just 
+                    the lack of fresh vegetables - it was the waste of fresh produce I had seen growing up.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 9: The reality of food waste */}
+              <StoryStep type="important">
+                <RevealText>
+                  <p>
+                    Kontomire and other vegetables, when in season, often went to waste. Sometimes even being intentionally thrown 
+                    away. There were other events leading up to this. I was already wondering why food went to waste.
+                    This situation extended to other crops like cassava, corn, yam, among others. Inadequate ways of 
+                    preserving them caused so much waste. Other farmers resorted to using chemicals or selling them cheaply.
+                  </p>
+                </RevealText>
+                
+                <RevealText delay={0.7}>
+                  <p className="mt-4">
+                    My hometown is a major agricultural zone, and we had (still have) farms. It seemed absurd that 
+                    we went through such cycles of abundance and scarcity. It just didn&apos;t make any sense to me!
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 10: Life-changing decision */}
+              <StoryStep type="default">
+                <SceneTransition title="The Decision" />
+                
+                <RevealText delay={0.4}>
+                  <p>
+                    At the time, I was also seriously considering what program to study at the university. My dad 
+                    suggested medicine, a field I had no interest in. But on that Saturday morning, a new path 
+                    became crystal clear to me. Thanks to mum! That final event set the course of my life. It 
+                    propelled me to study chemical engineering at the university because I believed that&apos;s how 
+                    I could do something about the situation.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 11: The obsession begins */}
+              <StoryStep type="default">
+                <RevealText>
+                  <p>
+                    Every course I took, from Transport Phenomena to Calculus, from Material balance to Plant design, 
+                    from Reaction engineering to Instrumentation, and even English and Economics. I always asked myself 
+                    after class, &quot;How will today&apos;s lesson help me solve the problem?&quot; I became obsessed! And questioned 
+                    if I was losing it.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 12: First project */}
+              <StoryStep type="default">
+                <SceneTransition title="First Project" />
+                
+                <RevealText delay={0.3}>
+                  <p>
+                    My very first project in my first year was designing a process to preserve kontomire. I worked on this project 
+                    for two years before taking a break. But during the COVID lockdown, I resumed work on it, using my 
+                    elder sister&apos;s refrigerator as my lab. This project didn&apos;t get anywhere seemingly. But I can now 
+                    store kontomire in my refrigerator from a minimum of 2 weeks to a maximum of 6 weeks. Normally, it lasts 5 to 7 days.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 13: Further developments */}
+              <StoryStep type="default">
+                <RevealText>
+                  <p>
+                    After this, I conducted scientific projects on food. I engaged in self-study about food and nutrition. 
+                    I ran food businesses. I worked with 30 rural farmers. I spoke at esteemed events about food systems. 
+                    I worked in food companies. I uphold healthy food practices for a more balanced &quot;adult&quot; life. And I 
+                    share my knowledge and experiences on LinkedIn.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 14: Reflection */}
+              <StoryStep type="highlight">
+                <RevealText>
+                  <p className="text-xl">
+                    From that day to now, it&apos;s been 9 years, and the question, &quot;What are you doing about it?&quot; 
+                    still rings in my mind. I have never looked back.
+                  </p>
+                </RevealText>
+              </StoryStep>
+              
+              {/* Scene 15: Final thoughts */}
+              <StoryStep type="default">
+                <RevealText>
+                  <p>
+                    Have you found your passion? Pursue it with resilience, take it day by day. Have you not found 
+                    your passion? Search for it. It&apos;ll come knowingly or unknowingly, in the grandest of situations or in 
+                    seemingly insignificant moments. Whatever there may be, you&apos;ll find it.
+                  </p>
+                </RevealText>
+              </StoryStep>
+            </InteractiveStory>
 
             {/* Newsletter Subscription CTA */}
-            <div className="my-8 p-6 rounded-lg border border-muted shadow-sm">
+            <AnimatedBackground className="my-8 p-6 rounded-lg border border-muted shadow-sm">
               <p className="text-lg mb-4">
                 If you found this inspiring, consider subscribing to my free monthly newsletter. I break down complex 
                 food issues into simple, practical insights for your everyday food decisions. There are only 12 issues 
@@ -257,9 +351,7 @@ export default function AboutPage() {
                   </svg>
                 </Button>
               </Link>
-            </div>
-
-           
+            </AnimatedBackground>
           </div>
         </div>
       </section>
