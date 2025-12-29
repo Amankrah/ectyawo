@@ -46,4 +46,5 @@ next-env.d.ts
 
 # Personal notes and documentation
 *.txt
+!ads.txt
 my*journey.txt
