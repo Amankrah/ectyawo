@@ -1,14 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { useFormStatus } from "react-dom";
-import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { sendContactEmail } from "../actions";
 
 const researchAreas = [
   {
@@ -98,28 +92,41 @@ const collaborationAreas = [
   }
 ];
 
-interface FormState {
-  success?: boolean;
-  error?: string;
-  development?: boolean;
-}
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  
-  return (
-    <Button type="submit" size="lg" disabled={pending}>
-      {pending ? "Sending..." : "Submit Inquiry"}
-    </Button>
-  );
-}
-
 export default function ResearchPage() {
-  const [state, formAction] = useActionState(async (prevState: FormState | null, formData: FormData) => {
-    formData.set('eventType', 'Research Collaboration');
-    const result = await sendContactEmail(formData);
-    return result;
-  }, null);
+  const handleCollaborationClick = () => {
+    const subject = "Research Collaboration Inquiry";
+    const body = `
+Dear Etornam,
+
+I am interested in exploring research collaboration opportunities with you.
+
+CONTACT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name:         [Your Name]
+Email:        [Your Email]
+Organization: [Your Organization/Institution]
+Position:     [Your Position/Role]
+
+RESEARCH INTERESTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Collaboration Type: [Academic Research / Industry Research / Masters Supervision / Other]
+Research Area: [Consumer Food Systems / Nutrient Retention / Food Decision Support / Other]
+
+PROJECT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Please describe your research interests, potential collaboration areas, specific project ideas, timeline, and any relevant background information]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+I look forward to discussing potential collaboration opportunities.
+
+Best regards,
+[Your Name]
+    `.trim();
+
+    const mailtoLink = `mailto:contact@ectsyawo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -161,7 +168,7 @@ export default function ResearchPage() {
         <h2 className="text-3xl font-bold text-center mb-12">Research & Projects</h2>
         <div className="max-w-3xl mx-auto">
           {timeline.map((item) => (
-            <div key={item.year} className="relative pl-8 pb-12 last:pb-0">
+            <div key={item.title} className="relative pl-8 pb-12 last:pb-0">
               {/* Timeline line */}
               <div className="absolute left-0 top-0 bottom-0 w-px bg-border" />
               {/* Timeline dot */}
@@ -191,8 +198,8 @@ export default function ResearchPage() {
           <p className="text-lg text-muted-foreground mb-12">
             Interested in collaborating on research projects? Explore our areas of collaboration and get in touch.
           </p>
-          
-          <div className="grid gap-8 md:grid-cols-3 text-left">
+
+          <div className="grid gap-8 md:grid-cols-2 text-left mb-16">
             {collaborationAreas.map((collab) => (
               <Card key={collab.area} className="flex flex-col">
                 <CardHeader>
@@ -210,52 +217,60 @@ export default function ResearchPage() {
             ))}
           </div>
 
-          <div className="mt-12 max-w-[42rem] mx-auto">
-            {state?.success && (
-              <div className="p-4 rounded-lg bg-green-50 text-green-900 mb-6">
-                <p className="text-center font-medium">
-                  {state.development 
-                    ? "Form submitted successfully (Development Mode - Email not sent)"
-                    : "Thank you for your inquiry! We'll get back to you soon."}
-                </p>
-              </div>
-            )}
-            {state?.error && (
-              <div className="p-4 rounded-lg bg-red-50 text-red-900 mb-6">
-                <p className="text-center font-medium">
-                  {state.error}. Please try again or contact us directly.
-                </p>
-              </div>
-            )}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-3xl" />
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/10 to-primary/20 rounded-3xl blur-2xl opacity-50" />
 
-            <form action={formAction} className="space-y-8 text-left">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" name="name" placeholder="Your name" required />
+            <div className="relative p-8 md:p-12 bg-background/80 backdrop-blur-sm rounded-3xl border border-primary/10 shadow-lg">
+              <div className="max-w-2xl mx-auto space-y-6">
+                <div className="space-y-4">
+                  <div className="h-16 w-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <svg
+                      className="h-8 w-8 text-primary"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-semibold">Start a Collaboration</h3>
+                  <p className="text-muted-foreground text-lg">
+                    Click the button below to send me an email with your research collaboration inquiry. I&apos;ll provide a pre-filled template to help structure your proposal.
+                  </p>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" placeholder="Your email" required />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="organization">Organization</Label>
-                  <Input id="organization" name="organization" placeholder="Your organization" required />
+
+                <Button
+                  size="lg"
+                  onClick={handleCollaborationClick}
+                  className="w-full md:w-auto"
+                >
+                  Send Collaboration Inquiry
+                </Button>
+
+                <p className="text-sm text-muted-foreground">
+                  This will open your email client with a pre-filled template
+                </p>
+
+                <div className="mt-8 pt-8 border-t border-primary/10">
+                  <p className="text-sm text-muted-foreground">
+                    Or email me directly at{" "}
+                    <a
+                      href="mailto:contact@ectsyawo.com"
+                      className="text-primary hover:underline font-medium"
+                    >
+                      contact@ectsyawo.com
+                    </a>
+                  </p>
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="message">Research Interest</Label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  placeholder="Describe your research interests, potential collaboration areas, and any specific project ideas."
-                  required
-                />
-              </div>
-              <div className="flex justify-center">
-                <SubmitButton />
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </section>

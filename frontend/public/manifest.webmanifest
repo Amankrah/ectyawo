@@ -1,0 +1,29 @@
+{
+  "name": "Etornam C. Tsyawo - Food Systems Expert",
+  "short_name": "Etornam Tsyawo",
+  "description": "Food Systems Research Engineer specializing in consumer food systems, nutrient optimization, and sustainable food practices. Expert speaker on food systems transformation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["education", "food", "science", "business"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "scope": "/",
+  "screenshots": []
+}

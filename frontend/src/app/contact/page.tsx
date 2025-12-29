@@ -1,20 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { sendContactEmail } from "../actions";
-import { useFormStatus } from "react-dom";
-import { useActionState } from "react";
 import Image from "next/image";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
-
-interface FormState {
-  success?: boolean;
-  error?: string;
-  development?: boolean;
-}
 
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,21 +39,50 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  
-  return (
-    <Button type="submit" size="lg" disabled={pending}>
-      {pending ? "Sending..." : "Send Message"}
-    </Button>
-  );
-}
 
 export default function ContactPage() {
-  const [state, formAction] = useActionState(async (_prevState: FormState | null, formData: FormData) => {
-    const result = await sendContactEmail(formData);
-    return result;
-  }, null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [organization, setOrganization] = useState("");
+  const [eventType, setEventType] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Create email template
+    const subject = `Speaking Inquiry from ${name}${organization ? ` - ${organization}` : ''}`;
+
+    const body = `
+Dear Etornam,
+
+I am reaching out to inquire about booking you for a speaking engagement.
+
+CONTACT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name:         ${name}
+Email:        ${email}
+${organization ? `Organization: ${organization}` : ''}
+${eventType ? `Topic:        ${eventType}` : ''}
+
+MESSAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${message}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+I look forward to hearing from you.
+
+Best regards,
+${name}
+    `.trim();
+
+    // Create mailto link
+    const mailtoLink = `mailto:contact@ectsyawo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Open email client
+    window.location.href = mailtoLink;
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -153,54 +173,76 @@ export default function ContactPage() {
             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/10 to-primary/20 rounded-3xl blur-2xl opacity-50" />
             
             <div className="relative p-8 md:p-12 bg-background/80 backdrop-blur-sm rounded-3xl border border-primary/10 shadow-lg">
-              <form action={formAction} className="space-y-6">
+              <form onSubmit={handleSendEmail} className="space-y-6">
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium">Name</label>
-                    <Input id="name" name="name" required placeholder="Your name" />
+                    <Input
+                      id="name"
+                      name="name"
+                      required
+                      placeholder="Your name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium">Email</label>
-                    <Input id="email" name="email" type="email" required placeholder="Your email" />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="Your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </div>
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2">
                   <div className="space-y-2">
                     <label htmlFor="organization" className="text-sm font-medium">Organization</label>
-                    <Input id="organization" name="organization" placeholder="Your organization (if applicable)" />
+                    <Input
+                      id="organization"
+                      name="organization"
+                      placeholder="Your organization (if applicable)"
+                      value={organization}
+                      onChange={(e) => setOrganization(e.target.value)}
+                    />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="eventType" className="text-sm font-medium">Topic</label>
-                    <Input id="eventType" name="eventType" placeholder="What is this regarding?" />
+                    <Input
+                      id="eventType"
+                      name="eventType"
+                      placeholder="What is this regarding?"
+                      value={eventType}
+                      onChange={(e) => setEventType(e.target.value)}
+                    />
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium">Message</label>
-                  <Textarea 
-                    id="message" 
-                    name="message" 
-                    required 
-                    placeholder="Your message"
+                  <Textarea
+                    id="message"
+                    name="message"
+                    required
+                    placeholder="Tell me about your event, speaking topic needs, or inquiry..."
                     className="min-h-[150px]"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
                 </div>
 
                 <div className="flex flex-col space-y-4">
-                  <SubmitButton />
-                  {state?.success && (
-                    <p className="text-sm text-green-600">
-                      {state.development 
-                        ? "Message received (development mode)" 
-                        : "Thank you for your message. I'll be in touch soon!"}
-                    </p>
-                  )}
-                  {state?.error && (
-                    <p className="text-sm text-red-600">
-                      {state.error}
-                    </p>
-                  )}
+                  <Button type="submit" size="lg">
+                    Send Message
+                  </Button>
+                  <p className="text-sm text-muted-foreground text-center">
+                    This will open your email client with a pre-filled message
+                  </p>
                 </div>
               </form>
             </div>

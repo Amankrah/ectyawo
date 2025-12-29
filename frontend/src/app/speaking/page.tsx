@@ -2,15 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { sendContactEmail } from "../actions";
-import { useFormStatus } from "react-dom";
-import { useActionState } from "react";
 import Image from "next/image";
 import { LogoCarousel } from "@/components/ui/carousel";
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
+import { getProfessionalServiceSchema, getBreadcrumbSchema } from "@/lib/seo/structured-data";
 
 const speakingServices = [
   {
@@ -144,12 +140,6 @@ const testimonials = [
   }
 ];
 
-interface FormState {
-  success?: boolean;
-  error?: string;
-  development?: boolean;
-}
-
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -182,25 +172,64 @@ const FAQItem = ({ question, answer }: { question: string; answer: string }) => 
   );
 };
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  
-  return (
-    <Button type="submit" size="lg" disabled={pending}>
-      {pending ? "Sending..." : "Send Message"}
-    </Button>
-  );
-}
-
 export default function SpeakingPage() {
-  const [state, formAction] = useActionState(async (_prevState: FormState | null, formData: FormData) => {
-    const result = await sendContactEmail(formData);
-    return result;
-  }, null);
+  const professionalServiceSchema = getProfessionalServiceSchema();
+  const breadcrumbSchema = getBreadcrumbSchema([
+    { name: "Home", url: "/" },
+    { name: "Speaking", url: "/speaking" }
+  ]);
+
+  const handleContactClick = () => {
+    const subject = "Speaking Engagement Inquiry";
+    const body = `
+Dear Etornam,
+
+I am interested in booking you for a speaking engagement.
+
+CONTACT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name:         [Your Name]
+Email:        [Your Email]
+Organization: [Your Organization]
+Event Type:   [Corporate Training, Academic Lectures, Panel Discussion, Workshop & Seminar, or other]
+
+EVENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Event Date:   [Date]
+Event Location: [Location/Virtual]
+Expected Audience: [Number and Type]
+Event Duration: [Duration]
+
+MESSAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Please describe your speaking topic, any specific requirements and other details you would like me to know]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+I look forward to hearing from you.
+
+Best regards,
+[Your Name]
+    `.trim();
+
+    const mailtoLink = `mailto:contact@ectsyawo.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+  };
 
   return (
-    <div className="flex flex-col items-center">
-      {/* Hero Section */}
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+
+      <div className="flex flex-col items-center">
+        {/* Hero Section */}
       <section className="relative container flex flex-col gap-6 py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 bg-grid-slate-900/[0.04] bg-[size:40px_40px] [mask-image:radial-gradient(white,transparent_85%)]" />
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]">
@@ -734,73 +763,72 @@ export default function SpeakingPage() {
       </section>
 
 
-      {/* Contact Form Section */}
+      {/* Contact Section */}
       <section id="booking" className="container py-12 md:py-24">
         <div className="max-w-[58rem] mx-auto">
           <div className="text-center space-y-4 mb-12">
-            <h2 className="text-3xl font-bold">Contact Me</h2>
+            <h2 className="text-3xl font-bold">Book Me for Your Event</h2>
             <p className="text-muted-foreground">Get in touch and let&apos;s discuss your speaking needs and goals now</p>
           </div>
 
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 rounded-3xl" />
             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/10 to-primary/20 rounded-3xl blur-2xl opacity-50" />
-            
-            <div className="relative p-8 md:p-12 bg-background/80 backdrop-blur-sm rounded-3xl border border-primary/10 shadow-lg">
-              <form action={formAction} className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium">Name</label>
-                    <Input id="name" name="name" required placeholder="Your name" />
+
+            <div className="relative p-8 md:p-12 bg-background/80 backdrop-blur-sm rounded-3xl border border-primary/10 shadow-lg text-center">
+              <div className="max-w-2xl mx-auto space-y-6">
+                <div className="space-y-4">
+                  <div className="h-16 w-16 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <svg
+                      className="h-8 w-8 text-primary"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">Email</label>
-                    <Input id="email" name="email" type="email" required placeholder="Your email" />
-                  </div>
+                  <h3 className="text-2xl font-semibold">Ready to Book a Speaker?</h3>
+                  <p className="text-muted-foreground text-lg">
+                    Click the button below to send me an email with your event details. I&apos;ll provide a pre-filled template to make it easy for you.
+                  </p>
                 </div>
 
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label htmlFor="organization" className="text-sm font-medium">Organization</label>
-                    <Input id="organization" name="organization" required placeholder="Your organization" />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="eventType" className="text-sm font-medium">Event Type</label>
-                    <Input id="eventType" name="eventType" required placeholder="Type of event" />
-                  </div>
-                </div>
+                <Button
+                  size="lg"
+                  onClick={handleContactClick}
+                  className="w-full md:w-auto"
+                >
+                  Send Booking Inquiry
+                </Button>
 
-                <div className="space-y-2">
-                  <label htmlFor="message" className="text-sm font-medium">Message</label>
-                  <Textarea 
-                    id="message" 
-                    name="message" 
-                    required 
-                    placeholder="Tell us about your event and requirements"
-                    className="min-h-[150px]"
-                  />
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  This will open your email client with a pre-filled template
+                </p>
 
-                <div className="flex flex-col space-y-4">
-                  <SubmitButton />
-                  {state?.success && (
-                    <p className="text-sm text-green-600">
-                      {state.development 
-                        ? "Message received (development mode)" 
-                        : "Thank you for your message. We'll be in touch soon!"}
-                    </p>
-                  )}
-                  {state?.error && (
-                    <p className="text-sm text-red-600">
-                      {state.error}
-                    </p>
-                  )}
+                <div className="mt-8 pt-8 border-t border-primary/10">
+                  <p className="text-sm text-muted-foreground">
+                    Or email me directly at{" "}
+                    <a
+                      href="mailto:contact@ectsyawo.com"
+                      className="text-primary hover:underline font-medium"
+                    >
+                      contact@ectsyawo.com
+                    </a>
+                  </p>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </div>
+    </>
   );
 }

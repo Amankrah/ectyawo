@@ -7,6 +7,7 @@ import { LogoCarousel } from "@/components/ui/carousel";
 import { TestimonialCard } from "@/components/ui/testimonial-card"
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useEffect, useState } from "react";
+import { getPersonSchema, getOrganizationSchema } from "@/lib/seo/structured-data";
 
 const DesktopHero = () => (
   <section className="relative w-full min-h-[100svh] overflow-hidden">
@@ -217,9 +218,23 @@ export default function Home() {
     }
   ];
 
+  const personSchema = getPersonSchema();
+  const organizationSchema = getOrganizationSchema();
+
   return (
-    <div className="flex flex-col items-center">
-      {isDesktop ? <DesktopHero /> : <MobileHero />}
+    <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+
+      <div className="flex flex-col items-center">
+        {isDesktop ? <DesktopHero /> : <MobileHero />}
 
       {/* Speaking Section with Logo Carousel */}
       <section className="container py-8 md:py-16">
@@ -506,5 +521,6 @@ export default function Home() {
         </div>
       </section>
     </div>
+    </>
   );
 }

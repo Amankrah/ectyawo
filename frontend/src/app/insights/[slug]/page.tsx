@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Metadata } from "next";
+import { getArticleSchema, getBreadcrumbSchema } from "@/lib/seo/structured-data";
 
 const components: Partial<PortableTextReactComponents> = {
   block: {
@@ -51,14 +53,82 @@ const components: Partial<PortableTextReactComponents> = {
   },
 };
 
+// Generate metadata for each blog post
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  try {
+    const normalizedSlug = decodeURIComponent(params.slug.toLowerCase());
+    const post = await getPost(normalizedSlug);
+
+    if (!post) {
+      return {
+        title: "Post Not Found",
+        description: "The requested blog post could not be found.",
+      };
+    }
+
+    const imageUrl = post.imageUrl || "https://ectsyawo.com/og-image.jpg";
+    const description = post.excerpt || post.title;
+
+    return {
+      title: post.title,
+      description: description,
+      keywords: [
+        post.category || "food systems",
+        "nutrition",
+        "sustainable agriculture",
+        "food science",
+        "evidence-based nutrition",
+        "consumer food empowerment"
+      ],
+      authors: [{ name: post.author || "Etornam C. Tsyawo" }],
+      openGraph: {
+        title: post.title,
+        description: description,
+        url: `https://ectsyawo.com/insights/${post.slug}`,
+        type: "article",
+        publishedTime: post.publishedAt,
+        authors: [post.author || "Etornam C. Tsyawo"],
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: post.title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.title,
+        description: description,
+        images: [imageUrl],
+        creator: "@etornamtsyawo",
+      },
+      alternates: {
+        canonical: `https://ectsyawo.com/insights/${post.slug}`,
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return {
+      title: "Food Insights",
+      description: "Insights on food systems, nutrition, and sustainable agriculture.",
+    };
+  }
+}
+
 // Generate static params for known posts
 export async function generateStaticParams() {
   try {
     console.log('Generating static paths for insights posts');
     const posts = await getLatestPosts(100); // Fetch more posts to ensure coverage
-    
+
     console.log(`Generated paths for ${posts.length} posts`);
-    
+
     return posts.map((post) => ({
       slug: post.slug,
     }));
@@ -180,9 +250,37 @@ export default async function PostPage({
     
     // Fetch adjacent posts for navigation
     const { nextPost, previousPost } = await getAdjacentPosts(post.slug, post.publishedAt);
-  
+
+    // Generate structured data
+    const articleSchema = getArticleSchema({
+      title: post.title,
+      description: post.excerpt || post.title,
+      slug: post.slug,
+      publishedAt: post.publishedAt,
+      imageUrl: post.imageUrl,
+      author: post.author,
+      category: post.category
+    });
+
+    const breadcrumbSchema = getBreadcrumbSchema([
+      { name: "Home", url: "/" },
+      { name: "Insights", url: "/insights" },
+      { name: post.title, url: `/insights/${post.slug}` }
+    ]);
+
     return (
-      <article className="container max-w-3xl py-24">
+      <>
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+
+        <article className="container max-w-3xl py-24">
         <header className="mb-12">
           <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
             {post.category && <span>{post.category}</span>}
@@ -226,6 +324,7 @@ export default async function PostPage({
           <PostNavigation nextPost={nextPost} previousPost={previousPost} />
         )}
       </article>
+      </>
     );
   } catch (error) {
     console.error('Error rendering post page:', error);
