@@ -123,6 +123,7 @@ export default function Home() {
 
   
   const organizationLogos = [
+    { src: "/logos/resolutionproject.png", alt: "Resolution Project", sizes: "(max-width: 768px) 33vw, 20vw", priority: true },
     { src: "/logos/centreforgreengrowth.png", alt: "Centre for Green Growth", sizes: "(max-width: 768px) 33vw, 20vw", priority: true },
     { src: "/logos/graffiland.png", alt: "GraffiLand", sizes: "(max-width: 768px) 33vw, 20vw", priority: true },
     { src: "/logos/womeninengineeringGhIE.png", alt: "Women in Engineering GhIE", sizes: "(max-width: 768px) 33vw, 20vw", priority: true },
@@ -254,20 +255,24 @@ export default function Home() {
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <TestimonialCard
+              quote="The high level of engagement during Etornam's portion of the discussion was a testament to the relevance and depth of her insights."
+              author="Somaly Tum"
+              role="Program Organizer"
+              organization="Resolution Project"
+              linkedinUrl="https://www.linkedin.com/in/somalytum"
+              headshot="/images/testimonials/somaly-tum.jpg"
+            />
+            
             <TestimonialCard
               quote="Etornam's collaborative spirit, professionalism and effective communication significantly contributed to the success of the event"
               author="Nana Minta Asiedu"
               role="Program Lead"
               organization="Green Africa Youth Organization"
-              initials="NM"
+              linkedinUrl="https://www.linkedin.com/in/nana-minta-asiedu"
+              headshot="/images/testimonials/nana-minta-asiedu.jpg"
             />
-            <TestimonialCard
-              quote="We were extremely impressed by Etornam's passion and problem-solving approach."
-              author="Melissa Forson"
-              role="Project Officer"
-              organization="Center for Green Growth"
-              initials="MF"
-            />
+            
           </div>
 
           {/* Speaking Style Card */}

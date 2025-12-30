@@ -117,27 +117,32 @@ const speakingServices = [
 ];
 
 const testimonials = [
+  
+  {
+    quote: "It was a true pleasure having Etornam join our panel discussion. She brought a rare blend of vulnerability and clarity, creating space for honest dialogue and meaningful connection. The high level of engagement during her portion of the discussion was a testament to the relevance and depth of her insights. I would absolutely recommend her as a speaker for future events. She brings both lived experience and a powerful presence to every conversation.",
+    author: "Somaly Tum",
+    role: "Program Organizer",
+    organization: "Resolution Project",
+    linkedinUrl: "https://www.linkedin.com/in/somalytum",
+    headshot: "/images/testimonials/somaly-tum.jpg"
+  },
   {
     quote: "Etornam was instrumental in achieving the HD4HL objectives. Her profound knowledge of the subject matter was evident  in the comprehensive insights she shared. She's able to navigate nuanced discussions and align diverse perspectives towards a common goal. Her collaborative spirit, professionalism and effective communication significantly contributed to the success of the event. I wholeheartedly endorse Etornam as a distinguished speaker for any future engagements.",
     author: "Nana Minta Asiedu",
     role: "Program Lead",
     organization: "Green Africa Youth Organization",
-    initials: "NM"
+    linkedinUrl: "https://www.linkedin.com/in/ampadu-minta",
+    headshot: "/images/testimonials/nana-minta-asiedu.jpg"
   },
   {
-    quote: "We invited Etornam as an expert speaker to ot on Addressing Barriers to Achieving Food Security. She shared invaluable insights from her experience. She brough a unique blend of technical expertise and collaborative leadership. Her holistic perspective considers opportunities across the food value chain. Etornam is well-positioned to support new ventures in addressing critical needs around affordability, availability and marketing of nutritious food. We were extremely impressed by her passion and problem-solving approach. ",
+    quote: "We invited Etornam as an expert speaker on Addressing Barriers to Achieving Food Security. She shared invaluable insights from her experience. She brough a unique blend of technical expertise and collaborative leadership. Her holistic perspective considers opportunities across the food value chain. Etornam is well-positioned to support new ventures in addressing critical needs around affordability, availability and marketing of nutritious food. We were extremely impressed by her passion and problem-solving approach. ",
     author: "Melissa Forson",
     role: "Project Officer",
     organization: "Center for Green Growth",
-    initials: "MF"
-  },
-  {
-    quote: "I left with Etornam's parting words that resonate deeply. Her explanation on the fragmentation of food systems was truly eye-opening.",
-    author: "Oluwaseun Ekunda",
-    role: "Audience",
-    organization: "Healthier Diets 4 Healthy Lives Event",
-    initials: "EO"
+    linkedinUrl: "https://www.linkedin.com/in/melissa-forson-195948181",
+    headshot: "/images/testimonials/melissa-forson.jpg"
   }
+ 
 ];
 
 const FAQItem = ({ question, answer }: { question: string; answer: string }) => {
@@ -277,6 +282,7 @@ Best regards,
             </p>
           </div>
           <LogoCarousel logos={[
+            { src: "/logos/resolutionproject.png", alt: "Resolution Project", sizes: "(max-width: 768px) 33vw, 20vw" },
             { src: "/logos/centreforgreengrowth.png", alt: "Centre for Green Growth", sizes: "(max-width: 768px) 33vw, 20vw" },
             { src: "/logos/graffiland.png", alt: "GraffiLand", sizes: "(max-width: 768px) 33vw, 20vw" },
             { src: "/logos/womeninengineeringGhIE.png", alt: "Women in Engineering GhIE", sizes: "(max-width: 768px) 33vw, 20vw" },
@@ -327,14 +333,13 @@ Best regards,
                     </blockquote>
                     <div className="flex flex-col items-center space-y-2">
                       <div className="flex items-center gap-3 w-full">
-                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium">
-                          {testimonial.initials}
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold">{testimonial.author}</p>
-                          <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                          <p className="text-sm text-muted-foreground">{testimonial.organization}</p>
-                        </div>
+                          <Image src={testimonial.headshot} alt={testimonial.author} width={32} height={32} className="rounded-full" />
+                          <div className="flex-1">
+                            <p className="font-semibold">{testimonial.author}</p>
+                            <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                            <p className="text-sm text-muted-foreground">{testimonial.organization}</p>
+                            <Link href={testimonial.linkedinUrl} target="_blank" className="text-sm text-muted-foreground">LinkedIn</Link>
+                          </div>
                       </div>
                     </div>
                   </CardContent>
@@ -564,93 +569,75 @@ Best regards,
             </p>
           </div>
 
-          <div className="relative mt-16">
+          <div className="relative mt-16 max-w-2xl mx-auto">
             {/* Timeline Line */}
-            <div className="absolute left-4 md:left-1/2 h-full w-0.5 bg-primary/20 -translate-x-1/2" />
+            <div className="absolute left-4 h-full w-0.5 bg-primary/20" />
 
             {/* Timeline Steps */}
-            <div className="space-y-12">
+            <div className="space-y-10">
               {/* Step 1 */}
-              <div className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                <div className="flex items-center gap-4 md:w-[calc(50%-2rem)] md:justify-end order-2 md:order-1">
-                  <div className="flex-1 md:flex-none">
-                    <h3 className="text-xl font-semibold mb-2">Initial Contact</h3>
-                    <p className="text-muted-foreground">Share your event details and requirements</p>
-                  </div>
-                </div>
-                <div className="absolute left-4 md:left-1/2 w-8 h-8 bg-background border-2 border-primary rounded-full -translate-x-1/2 flex items-center justify-center order-1 md:order-2">
+              <div className="relative flex items-start gap-6 pl-12">
+                <div className="absolute left-0 w-8 h-8 bg-background border-2 border-primary rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">1</span>
                 </div>
-                <div className="md:w-[calc(50%-2rem)] order-3" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Initial Contact</h3>
+                  <p className="text-muted-foreground">Share your event details and requirements</p>
+                </div>
               </div>
 
               {/* Step 2 */}
-              <div className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                <div className="md:w-[calc(50%-2rem)] order-2 md:order-1" />
-                <div className="absolute left-4 md:left-1/2 w-8 h-8 bg-background border-2 border-primary rounded-full -translate-x-1/2 flex items-center justify-center order-1 md:order-2">
+              <div className="relative flex items-start gap-6 pl-12">
+                <div className="absolute left-0 w-8 h-8 bg-background border-2 border-primary rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">2</span>
                 </div>
-                <div className="flex items-center gap-4 md:w-[calc(50%-2rem)] order-3">
-                  <div className="flex-1 md:flex-none">
-                    <h3 className="text-xl font-semibold mb-2">45min Discovery Meeting</h3>
-                    <p className="text-muted-foreground">Discuss goals, audience, and desired outcomes</p>
-                  </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">45min Discovery Meeting</h3>
+                  <p className="text-muted-foreground">Discuss goals, audience, and desired outcomes</p>
                 </div>
               </div>
 
               {/* Step 3 */}
-              <div className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                <div className="flex items-center gap-4 md:w-[calc(50%-2rem)] md:justify-end order-2 md:order-1">
-                  <div className="flex-1 md:flex-none">
-                    <h3 className="text-xl font-semibold mb-2">Agreement & Deposit</h3>
-                    <p className="text-muted-foreground">Finalize terms and secure the date with 65% deposit</p>
-                  </div>
-                </div>
-                <div className="absolute left-4 md:left-1/2 w-8 h-8 bg-background border-2 border-primary rounded-full -translate-x-1/2 flex items-center justify-center order-1 md:order-2">
+              <div className="relative flex items-start gap-6 pl-12">
+                <div className="absolute left-0 w-8 h-8 bg-background border-2 border-primary rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">3</span>
                 </div>
-                <div className="md:w-[calc(50%-2rem)] order-3" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Agreement & Deposit</h3>
+                  <p className="text-muted-foreground">Finalize terms and secure the date with 65% deposit</p>
+                </div>
               </div>
 
               {/* Step 4 */}
-              <div className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                <div className="md:w-[calc(50%-2rem)] order-2 md:order-1" />
-                <div className="absolute left-4 md:left-1/2 w-8 h-8 bg-background border-2 border-primary rounded-full -translate-x-1/2 flex items-center justify-center order-1 md:order-2">
+              <div className="relative flex items-start gap-6 pl-12">
+                <div className="absolute left-0 w-8 h-8 bg-background border-2 border-primary rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">4</span>
                 </div>
-                <div className="flex items-center gap-4 md:w-[calc(50%-2rem)] order-3">
-                  <div className="flex-1 md:flex-none">
-                    <h3 className="text-xl font-semibold mb-2">Preparation & Delivery</h3>
-                    <p className="text-muted-foreground">Tailored content development and impactful presentation</p>
-                  </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Preparation & Delivery</h3>
+                  <p className="text-muted-foreground">Tailored content development and impactful presentation</p>
                 </div>
               </div>
 
               {/* Step 5 */}
-              <div className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                <div className="flex items-center gap-4 md:w-[calc(50%-2rem)] md:justify-end order-2 md:order-1">
-                  <div className="flex-1 md:flex-none">
-                    <h3 className="text-xl font-semibold mb-2">Goal Assessment & Final Payment</h3>
-                    <p className="text-muted-foreground">Review success metrics and complete remaining payment</p>
-                  </div>
-                </div>
-                <div className="absolute left-4 md:left-1/2 w-8 h-8 bg-background border-2 border-primary rounded-full -translate-x-1/2 flex items-center justify-center order-1 md:order-2">
+              <div className="relative flex items-start gap-6 pl-12">
+                <div className="absolute left-0 w-8 h-8 bg-background border-2 border-primary rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">5</span>
                 </div>
-                <div className="md:w-[calc(50%-2rem)] order-3" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Goal Assessment & Final Payment</h3>
+                  <p className="text-muted-foreground">Review success metrics and complete remaining payment</p>
+                </div>
               </div>
 
               {/* Step 6 */}
-              <div className="relative flex flex-col md:flex-row items-center md:justify-between group">
-                <div className="md:w-[calc(50%-2rem)] order-2 md:order-1" />
-                <div className="absolute left-4 md:left-1/2 w-8 h-8 bg-background border-2 border-primary rounded-full -translate-x-1/2 flex items-center justify-center order-1 md:order-2">
+              <div className="relative flex items-start gap-6 pl-12">
+                <div className="absolute left-0 w-8 h-8 bg-background border-2 border-primary rounded-full flex items-center justify-center">
                   <span className="text-sm font-bold">6</span>
                 </div>
-                <div className="flex items-center gap-4 md:w-[calc(50%-2rem)] order-3">
-                  <div className="flex-1 md:flex-none">
-                    <h3 className="text-xl font-semibold mb-2">Ongoing Relationship</h3>
-                    <p className="text-muted-foreground">Continue collaboration for future speaking engagements</p>
-                  </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Ongoing Relationship</h3>
+                  <p className="text-muted-foreground">Continue collaboration for future speaking engagements</p>
                 </div>
               </div>
             </div>
