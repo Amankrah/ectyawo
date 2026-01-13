@@ -16,6 +16,11 @@ export function getPersonSchema(): WithContext<Person> {
     ],
     knowsAbout: [
       "Food Systems",
+      "Consumer Food Systems",
+      "Household Food Processing",
+      "Food Decision Support Systems",
+      "Food Systems Education",
+      "Food Engineering",
       "Nutrition Science",
       "Sustainable Agriculture",
       "Food Safety",
@@ -94,7 +99,7 @@ export function getArticleSchema(article: {
       "@id": `https://ectsyawo.com/insights/${article.slug}`
     },
     articleSection: article.category || "Food Systems",
-    keywords: "food systems, nutrition, sustainable agriculture, food science"
+    keywords: "food systems, nutrition, sustainable agriculture, food science, consumer food systems, household food processing, food decision support systems, food systems education, food engineering, nutrition science, sustainable agriculture, food safety, environmental nutrition, consumer food empowerment, food processing optimization"
   };
 }
 
