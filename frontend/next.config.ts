@@ -28,10 +28,6 @@ const nextConfig = {
     // Needed for Sanity Studio
     ignoreBuildErrors: true,
   },
-  eslint: {
-    // Needed for Sanity Studio
-    ignoreDuringBuilds: true,
-  },
   // Add custom 404 page handling
   headers: async () => [
     {
