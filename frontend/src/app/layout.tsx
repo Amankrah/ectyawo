@@ -4,7 +4,7 @@ import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/next"
 
 // Replace the Inter font with Playfair Display and Source Sans Pro
 import { Playfair_Display, Source_Sans_3 } from "next/font/google";
