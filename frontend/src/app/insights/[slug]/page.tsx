@@ -57,10 +57,11 @@ const components: Partial<PortableTextReactComponents> = {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   try {
-    const normalizedSlug = decodeURIComponent(params.slug.toLowerCase());
+    const { slug } = await params;
+    const normalizedSlug = decodeURIComponent(slug.toLowerCase());
     const post = await getPost(normalizedSlug);
 
     if (!post) {
@@ -163,6 +164,7 @@ function PostNavigation({ nextPost, previousPost }: { nextPost: Post | null, pre
                     src={previousPost.imageUrl}
                     alt={previousPost.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 384px"
                     className="object-cover transition-transform group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/20"></div>
@@ -194,6 +196,7 @@ function PostNavigation({ nextPost, previousPost }: { nextPost: Post | null, pre
                     src={nextPost.imageUrl}
                     alt={nextPost.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 384px"
                     className="object-cover transition-transform group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/20"></div>
@@ -228,14 +231,14 @@ function PostNavigation({ nextPost, previousPost }: { nextPost: Post | null, pre
 export default async function PostPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   try {
-    const { slug } = params;
-    
+    const { slug } = await params;
+
     // Add more detailed logging
     console.log('Fetching post with slug:', slug);
-    
+
     // Normalize the slug - handle potential case differences or encoding issues
     const normalizedSlug = decodeURIComponent(slug.toLowerCase());
     
@@ -304,6 +307,7 @@ export default async function PostPage({
               src={post.imageUrl}
               alt={post.title}
               fill
+              sizes="(max-width: 768px) 100vw, 768px"
               className="rounded-lg object-cover"
               priority
             />

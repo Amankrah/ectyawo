@@ -40,7 +40,7 @@ export default async function InsightsPage() {
       {/* Content Grid */}
       <section id="posts" className="container py-12">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
+          {posts.map((post, index) => (
             <Card key={post._id} className="flex flex-col">
               {post.imageUrl && (
                 <div className="aspect-video relative">
@@ -48,6 +48,8 @@ export default async function InsightsPage() {
                     src={post.imageUrl}
                     alt={post.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    loading={index === 0 ? "eager" : "lazy"}
                     className="object-cover rounded-t-lg"
                   />
                 </div>

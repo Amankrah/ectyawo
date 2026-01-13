@@ -146,11 +146,11 @@ const Navbar = () => {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <Link href="/speaking#booking" legacyBehavior passHref>
-                <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "bg-primary text-primary-foreground hover:bg-white hover:text-primary")}>
+              <NavigationMenuLink asChild>
+                <Link href="/speaking#booking" className={cn(navigationMenuTriggerStyle(), "bg-primary text-primary-foreground hover:bg-white hover:text-primary")}>
                   Book for Speaking
-                </NavigationMenuLink>
-              </Link>
+                </Link>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
