@@ -20,50 +20,118 @@ function LinkedInIcon({ className }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container py-10">
-        <div className="flex flex-col items-center gap-8">
+      <div className="container py-12 md:py-16">
+        <div className="grid gap-12 md:gap-16">
           {/* Speaker booking CTA */}
-          <div className="text-center">
-            <h3 className="text-2xl font-bold mb-4">Ready to Transform Your Event?</h3>
-            <Button asChild size="lg">
-              <Link href="/speaking#booking">Book Me as a Speaker</Link>
-            </Button>
+          <div className="text-center space-y-4">
+            <h3 className="text-2xl md:text-3xl font-bold">Ready to Transform Your Event?</h3>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Book me for keynotes, workshops, and training on food systems transformation
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 pt-2">
+              <Button asChild size="lg">
+                <Link href="/speaking#booking">Book Me as a Speaker</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/contact">Get in Touch</Link>
+              </Button>
+            </div>
           </div>
 
-          {/* Social Links */}
-          <div className="flex gap-6">
-            <Link 
-              href="https://www.linkedin.com/in/etornam-c-tsyawo/" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary"
-            >
-              <LinkedInIcon className="h-6 w-6" />
-              <span className="sr-only">LinkedIn</span>
-            </Link>
-            <Link 
-              href="https://foodpulse.kit.com/0bacd8cebd" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary"
-            >
-              <Mail className="h-6 w-6" />
-              <span className="sr-only">Newsletter</span>
-            </Link>
-            <Link 
-              href="https://buymeacoffee.com/etornamctsyawo" 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-primary"
-            >
-              <Coffee className="h-6 w-6" />
-              <span className="sr-only">Buy Me a Coffee</span>
-            </Link>
+          {/* Quick Links & Social */}
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Navigation */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Navigation</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
+                <li><Link href="/speaking" className="hover:text-primary transition-colors">Speaking</Link></li>
+                <li><Link href="/research" className="hover:text-primary transition-colors">Research</Link></li>
+                <li><Link href="/insights" className="hover:text-primary transition-colors">Insights</Link></li>
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Resources</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+                <li><Link href="/about" className="hover:text-primary transition-colors">About</Link></li>
+                <li>
+                  <Link
+                    href="https://foodpulse.kit.com/0bacd8cebd"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors inline-flex items-center gap-1"
+                  >
+                    Newsletter
+                    <span className="text-xs">↗</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Support */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Support</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>
+                  <Link
+                    href="https://foodpulse.kit.com/products/cup-of-tea"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors inline-flex items-center gap-1"
+                  >
+                    Buy Me a Tea
+                    <span className="text-xs">↗</span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-semibold uppercase tracking-wider">Connect</h4>
+              <div className="flex gap-4">
+                <Link
+                  href="https://www.linkedin.com/in/etornam-c-tsyawo/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <LinkedInIcon className="h-5 w-5" />
+                </Link>
+                <Link
+                  href="https://foodpulse.kit.com/0bacd8cebd"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors"
+                  aria-label="Newsletter"
+                >
+                  <Mail className="h-5 w-5" />
+                </Link>
+                <Link
+                  href="https://foodpulse.kit.com/products/cup-of-tea"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-primary transition-colors"
+                  aria-label="Support with a cup of tea"
+                >
+                  <Coffee className="h-5 w-5" />
+                </Link>
+              </div>
+            </div>
           </div>
 
-          {/* Copyright */}
-          <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Etornam Tsyawo. All rights reserved.
+          {/* Bottom Bar */}
+          <div className="border-t pt-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+              <p>© {new Date().getFullYear()} Etornam C. Tsyawo. All rights reserved.</p>
+              <p className="text-center sm:text-right">
+                Transforming Food Systems Through Research & Education
+              </p>
+            </div>
           </div>
         </div>
       </div>
