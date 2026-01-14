@@ -798,18 +798,6 @@ Best regards,
                 <p className="text-sm text-muted-foreground">
                   This will open your email client with a pre-filled template
                 </p>
-
-                <div className="mt-8 pt-8 border-t border-primary/10">
-                  <p className="text-sm text-muted-foreground">
-                    Or email me directly at{" "}
-                    <a
-                      href="mailto:contact@ectsyawo.com"
-                      className="text-primary hover:underline font-medium"
-                    >
-                      contact@ectsyawo.com
-                    </a>
-                  </p>
-                </div>
               </div>
             </div>
           </div>
